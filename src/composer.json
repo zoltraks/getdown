@@ -1,0 +1,18 @@
+{
+    "name": "bigbytes/getdown",
+    "type": "project",
+    "license": "WTF-PL",
+    "authors": [
+        {
+            "name": "Filip Golewski",
+            "email": "f.golewski@gmail.com"
+        }
+    ],
+    "config": {
+        "vendor-dir": "vendor"
+    },
+    "require": {
+        "league/html-to-markdown": "^5.0",
+        "masterminds/html5": "^2.7"
+    }
+}
