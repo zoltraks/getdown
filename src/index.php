@@ -52,11 +52,11 @@ $url = preg_replace('/[\x00-\x1F]+/', '', $url);
 if (!preg_match('/^https?:\/\//i', $url)) $url = 'http://' . $url;
 
 switch ($format = strtolower($format)) {
-  case 'html':
+  case 'text':
   case 'json':
     break;
   default:
-    $format = 'text';
+    $format = 'html';
 }
 
 switch ($charset = strtoupper($charset)) {
