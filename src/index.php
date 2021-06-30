@@ -52,10 +52,10 @@ $url = preg_replace('/[\x00-\x1F]+/', '', $url);
 if (!preg_match('/^https?:\/\//i', $url)) $url = 'http://' . $url;
 
 switch ($format = strtolower($format)) {
-  case 'html': 
-  case 'json': 
+  case 'html':
+  case 'json':
     break;
-  default: 
+  default:
     $format = 'text';
 }
 
@@ -73,7 +73,8 @@ $error_handler = function ($severity, $message, $file, $line) {
 
 set_error_handler($error_handler);
 
-function fetch_links($url) {
+function fetch_links($url)
+{
   $esc = addslashes($url);
   $cmd = '';
   $cmd .= 'links';
@@ -89,7 +90,8 @@ function fetch_links($url) {
   return $res;
 }
 
-function fetch_curl($url) {
+function fetch_curl($url)
+{
   $curl = curl_init($url);
 
   curl_setopt($curl, CURLOPT_URL, $url);
@@ -104,34 +106,39 @@ function fetch_curl($url) {
   $result = curl_exec($curl);
 
   curl_close($curl);
-  
+
   return $result;
 }
 
-function fetch_php($url) {
+function fetch_php($url)
+{
   $result = @file_get_contents($url);
-  return $result;  
+  return $result;
 }
 
-function strip_html_comment($html) {
+function strip_html_comment($html)
+{
   $html = preg_replace('/<![^>]*>/', '', $html);
   return $html;
 }
 
-function strip_html_script($html) {
+function strip_html_script($html)
+{
   $html = preg_replace('/<script[^>]*>.*?<\/script>/is', '', $html);
   $html = preg_replace('/<script[^>]*\/>/i', '', $html);
   $html = preg_replace('/<\/script>/i', '', $html);
   return $html;
 }
 
-function strip_html_style($html) {
+function strip_html_style($html)
+{
   $html = preg_replace('/<style[^>]*>.*?<\/style>/is', '', $html);
   $html = preg_replace('/<\/style>/i', '', $html);
   return $html;
 }
 
-function strip_html_element_dom($html, $array) {
+function strip_html_element_dom($html, $array)
+{
   $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
   $dom = new DOMDocument();
   if (!@$dom->loadHTML($html)) {
@@ -143,7 +150,7 @@ function strip_html_element_dom($html, $array) {
     foreach ($tags as $item) $remove[] = $item;
   }
   foreach ($remove as $item) {
-    $item->parentNode->removeChild($item); 
+    $item->parentNode->removeChild($item);
   }
   $dom->formatOutput = true;
   $html = $dom->saveHTML();
@@ -155,12 +162,13 @@ function strip_html_element_dom($html, $array) {
   return $html;
 }
 
-function strip_html_element_html5($html, $array) {
+function strip_html_element_html5($html, $array)
+{
   //$html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
-$options = array(
-  'encode_entities' => true,
-  'disable_html_ns' => true,
-);
+  $options = array(
+    'encode_entities' => true,
+    'disable_html_ns' => true,
+  );
 
   $dom = new HTML5($options);
   if (!@$dom->loadHTML($html)) {
@@ -168,13 +176,14 @@ $options = array(
   }
   echo 'y';
   var_dump($dom);
-  
+
   $html = $dom->saveHTML();
   echo 'x';
   return $html;
 }
 
-function html_to_markdown($html) {
+function html_to_markdown($html)
+{
   $converter = new HtmlConverter();
   $converter->getConfig()->setOption('strip_tags', true);
   $converter->getEnvironment()->addConverter(new TableConverter());
@@ -182,7 +191,8 @@ function html_to_markdown($html) {
   return $markdown;
 }
 
-function markdown_eject_garbage($markdown) {
+function markdown_eject_garbage($markdown)
+{
   $eject = array();
   $eject[] = '/^\s*\[]\(\/\)\s{0,}/m';
   $eject[] = '/^\s*\\\-\-(>|\&gt;)\s*$/m';
@@ -199,7 +209,7 @@ try {
       $html = fetch_links($url);
       break;
     case 'curl':
-      $html = fetch_curl($url); 
+      $html = fetch_curl($url);
       break;
     case 'php':
       $html = fetch_php($url);
@@ -213,8 +223,7 @@ try {
     $html = html_to_markdown($html);
     $html = markdown_eject_garbage($html);
   }
-}
-catch (Exception $e) {
+} catch (Exception $e) {
   die('Error: ' . $e->getMessage());
 }
 
@@ -238,5 +247,3 @@ echo $html;
 echo "\n";
 
 exit(0);
-
-?>
