@@ -11,6 +11,12 @@ This program requires ``PHP`` at minimum version of ``7.1``.
 
 ## Installation ##
 
+Go to ``src`` directory and execute ``composer`` to fetch required packages.
+
+```
+composer install
+```
+
 Place files from this repository in some directory i.e. ``/var/www/getdown`` and make configuration for your web server.
 
 This is an example for ``nginx`` using ``php-fpm`` with version ``7.2``.
