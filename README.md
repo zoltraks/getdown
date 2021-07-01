@@ -1,7 +1,7 @@
 Get Down
 ========
 
-Simple gateway for fetching HTML sites in stripped text format.
+PHP gateway for fetching HTML sites in stripped text format.
 
 Allows to get just plain text from website.
 
