@@ -3,6 +3,8 @@
 require 'vendor/autoload.php';
 require 'include/function.php';
 
+// read query  parameters //
+
 $p = array_change_key_case($_GET, CASE_LOWER);
 
 $test = isset($p['test']);
@@ -23,9 +25,21 @@ $configuration['curl'] = true;
 $configuration['debug'] = false;
 $configuration['mode'] = 'curl';
 
-$dir = dirname(__FILE__);
+// search for config.json file //
 
-if (@file_exists($file = $dir . '/config.json')) {
+for (($i = 0) || $lookup = dirname(__FILE__); 2 > $i; ++$i) {
+  if (@file_exists($file = $lookup . '/config.json')) {
+    break;
+  }
+  else {
+    $file = null;
+    $lookup = dirname($lookup);
+  }
+}
+
+// load configuration file //
+
+if ($file) {
   $json = @file_get_contents($file);
   $data = $json ? json_decode($json, true) : false;
   if ($data) {
